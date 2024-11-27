@@ -1,5 +1,6 @@
 
 
+
  MySQL Project Documentation
 
 To properly show the relationships between the tables, here's how you can visualize the database schema, describing how the tables are connected via foreign keys. The relationships between the tables can be grouped based on their interdependencies, and I'll also include explanations for each relationship.
@@ -129,6 +130,9 @@ To properly show the relationships between the tables, here's how you can visual
    - `Wishlist_Items` references `Products(product_id)` through the foreign key `product_id`.
 
 ---
+![diagram (2)](https://github.com/user-attachments/assets/24cdf7c7-4df4-49b1-bf21-0e430c309681)
+
+
 
  Entity Relationship Diagram (ERD)
 To visualize the relationships between the tables, you can create an Entity Relationship Diagram (ERD). Below is a basic representation of the relationships:
