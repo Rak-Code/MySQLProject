@@ -1,150 +1,171 @@
 
 
-
  MySQL Project Documentation
 
-To properly show the relationships between the tables, here's how you can visualize the database schema, describing how the tables are connected via foreign keys. The relationships between the tables can be grouped based on their interdependencies, and I'll also include explanations for each relationship.
-
- Database Schema Relationships
+This document details the database schema, relationships, and advanced functionalities implemented for an e-commerce application. The database is designed to support core functionalities like order processing, user management, and product handling, with added features like triggers and stored procedures.
 
 ---
 
+ Database Schema Relationships
+
  1. Users
-   - user_id (PK): Unique identifier for each user.
-   - username: User's username.
-   - email: User's email.
-   - password: User's hashed password.
-   - phone: User's phone number.
-   - address: User's address.
+- Attributes:
+  - `user_id` (PK): Unique identifier for each user.
 
 ---
 
  2. Products
-   - product_id (PK): Unique identifier for each product.
-   - product_name: Name of the product.
-   - description: Description of the product.
-   - price: Price of the product.
-   - stock_quantity: Quantity available in stock.
-   - category_id (FK): Foreign key referencing `Categories(category_id)`.
-   - brand: Brand name.
+- Attributes:
+  - `product_id` (PK): Unique identifier for each product.
+  - `category_id` (FK): Foreign key referencing `Categories(category_id)`.
 
 ---
 
  3. Categories
-   - category_id (PK): Unique identifier for each category.
-   - category_name: Name of the category.
+- Attributes:
+  - `category_id` (PK): Unique identifier for each category.
 
-   Relationship: 
-   - The `Products` table has a foreign key (`category_id`) that references `Categories(category_id)`.
+- Relationship:
+  - `Products` references `Categories` via the foreign key `category_id`.
 
 ---
 
  4. Orders
-   - order_id (PK): Unique identifier for each order.
-   - user_id (FK): Foreign key referencing `Users(user_id)`.
-   - order_date: Date and time of the order.
-   - status: Order status (e.g., Pending, Completed, Cancelled).
-   - total_amount: Total cost of the order.
+- Attributes:
+  - `order_id` (PK): Unique identifier for each order.
+  - `user_id` (FK): Foreign key referencing `Users(user_id)`.
 
-   Relationship: 
-   - The `Orders` table is connected to the `Users` table via the foreign key `user_id`.
+- Relationship:
+  - Connected to `Users` via the foreign key `user_id`.
 
 ---
 
  5. Order_Items
-   - order_item_id (PK): Unique identifier for each order item.
-   - order_id (FK): Foreign key referencing `Orders(order_id)`.
-   - product_id (FK): Foreign key referencing `Products(product_id)`.
-   - quantity: Quantity of the product ordered.
-   - price: Price of the product at the time of the order.
+- Attributes:
+  - `order_item_id` (PK): Unique identifier for each order item.
+  - `order_id` (FK): Foreign key referencing `Orders(order_id)`.
+  - `product_id` (FK): Foreign key referencing `Products(product_id)`.
 
-   Relationships:
-   - `Order_Items` references `Orders(order_id)` through `order_id`.
-   - `Order_Items` references `Products(product_id)` through `product_id`.
+- Relationships:
+  - References `Orders` via `order_id`.
+  - References `Products` via `product_id`.
 
 ---
 
  6. Cart
-   - cart_id (PK): Unique identifier for each cart.
-   - user_id (FK): Foreign key referencing `Users(user_id)`.
+- Attributes:
+  - `cart_id` (PK): Unique identifier for each cart.
+  - `user_id` (FK): Foreign key referencing `Users(user_id)`.
 
-   Relationship:
-   - The `Cart` table is linked to `Users(user_id)` through the foreign key `user_id`.
+- Relationship:
+  - Linked to `Users` via the foreign key `user_id`.
 
 ---
 
  7. Cart_Items
-   - cart_item_id (PK): Unique identifier for each cart item.
-   - cart_id (FK): Foreign key referencing `Cart(cart_id)`.
-   - product_id (FK): Foreign key referencing `Products(product_id)`.
-   - quantity: Quantity of the product in the cart.
+- Attributes:
+  - `cart_item_id` (PK): Unique identifier for each cart item.
+  - `cart_id` (FK): Foreign key referencing `Cart(cart_id)`.
+  - `product_id` (FK): Foreign key referencing `Products(product_id)`.
 
-   Relationships:
-   - `Cart_Items` references `Cart(cart_id)` through `cart_id`.
-   - `Cart_Items` references `Products(product_id)` through `product_id`.
+- Relationships:
+  - References `Cart` via `cart_id`.
+  - References `Products` via `product_id`.
 
 ---
 
  8. Reviews
-   - review_id (PK): Unique identifier for each review.
-   - user_id (FK): Foreign key referencing `Users(user_id)`.
-   - product_id (FK): Foreign key referencing `Products(product_id)`.
-   - rating: Rating given by the user (1-5).
-   - comment: User's comment.
+- Attributes:
+  - `review_id` (PK): Unique identifier for each review.
+  - `user_id` (FK): Foreign key referencing `Users(user_id)`.
+  - `product_id` (FK): Foreign key referencing `Products(product_id)`.
 
-   Relationships:
-   - `Reviews` is connected to `Users(user_id)` via the foreign key `user_id`.
-   - `Reviews` is also connected to `Products(product_id)` via the foreign key `product_id`.
+- Relationships:
+  - Connected to `Users` via the foreign key `user_id`.
+  - Connected to `Products` via the foreign key `product_id`.
 
 ---
 
  9. Payments
-   - payment_id (PK): Unique identifier for each payment.
-   - order_id (FK): Foreign key referencing `Orders(order_id)`.
-   - payment_date: Date of payment.
-   - amount: Payment amount.
-   - payment_method: Method used for payment (e.g., Credit Card, PayPal).
-   - payment_status: Status of the payment (e.g., Successful, Failed, Pending).
+- Attributes:
+  - `payment_id` (PK): Unique identifier for each payment.
+  - `order_id` (FK): Foreign key referencing `Orders(order_id)`.
 
-   Relationship:
-   - The `Payments` table is connected to `Orders(order_id)` through the foreign key `order_id`.
+- Relationship:
+  - Connected to `Orders` via the foreign key `order_id`.
 
 ---
 
  10. Wishlist
-   - wishlist_id (PK): Unique identifier for each wishlist.
-   - user_id (FK): Foreign key referencing `Users(user_id)`.
+- Attributes:
+  - `wishlist_id` (PK): Unique identifier for each wishlist.
+  - `user_id` (FK): Foreign key referencing `Users(user_id)`.
 
-   Relationship:
-   - The `Wishlist` table references `Users(user_id)` through the foreign key `user_id`.
+- Relationship:
+  - References `Users` via the foreign key `user_id`.
 
 ---
 
  11. Wishlist_Items
-   - wishlist_item_id (PK): Unique identifier for each wishlist item.
-   - wishlist_id (FK): Foreign key referencing `Wishlist(wishlist_id)`.
-   - product_id (FK): Foreign key referencing `Products(product_id)`.
+- Attributes:
+  - `wishlist_item_id` (PK): Unique identifier for each wishlist item.
+  - `wishlist_id` (FK): Foreign key referencing `Wishlist(wishlist_id)`.
+  - `product_id` (FK): Foreign key referencing `Products(product_id)`.
 
-   Relationships:
-   - `Wishlist_Items` references `Wishlist(wishlist_id)` through the foreign key `wishlist_id`.
-   - `Wishlist_Items` references `Products(product_id)` through the foreign key `product_id`.
+- Relationships:
+  - References `Wishlist` via `wishlist_id`.
+  - References `Products` via `product_id`.
 
 ---
+
+ Advanced Features
+
+ Views
+- DetailedView:
+  - Combines data from orders, users, products, and order items.
+  - Displays detailed information, including calculated total prices per order item.
+
+---
+
+ Functions
+- Discount Calculation:
+  - Calculates the discounted price for a product based on the original price and discount percentage.
+
+---
+
+ Procedures
+- Get User Details:
+  - Retrieves details of a specific user by their user ID.
+
+- Get Orders:
+  - Fetches all orders placed by a specific user, including their username.
+
+---
+
+ Triggers
+- Password Change Validation:
+  - Ensures users cannot reuse their previous or recently used passwords.
+
+- Log User Details on Order Deletion:
+  - Automatically logs user details in the `user_log` table when an order is deleted.
+
+---
+
 ![diagram (2)](https://github.com/user-attachments/assets/24cdf7c7-4df4-49b1-bf21-0e430c309681)
 
 
+ Relationships Summary (ERD)
+- Users ↔ Orders: One user can have multiple orders.
+- Users ↔ Cart: One user can have one cart.
+- Users ↔ Wishlist: One user can have one wishlist.
+- Products ↔ Order_Items: One product can appear in multiple order items.
+- Products ↔ Cart_Items: One product can appear in multiple cart items.
+- Products ↔ Reviews: One product can have multiple reviews.
+- Orders ↔ Order_Items: One order can contain multiple items.
+- Wishlist ↔ Wishlist_Items: One wishlist can contain multiple items.
+- Cart ↔ Cart_Items: One cart can contain multiple items.
+- Orders ↔ Payments: One order can have one payment.
 
- Entity Relationship Diagram (ERD)
-To visualize the relationships between the tables, you can create an Entity Relationship Diagram (ERD). Below is a basic representation of the relationships:
+---
 
-1. Users ↔ Orders (One user can have multiple orders)
-2. Users ↔ Cart (One user can have one cart)
-3. Users ↔ Wishlist (One user can have one wishlist)
-4. Products ↔ Order_Items (One product can appear in multiple order items)
-5. Products ↔ Cart_Items (One product can appear in multiple cart items)
-6. Products ↔ Reviews (One product can have multiple reviews)
-7. Orders ↔ Order_Items (One order can contain multiple items)
-8. Wishlist ↔ Wishlist_Items (One wishlist can contain multiple items)
-9. Cart ↔ Cart_Items (One cart can contain multiple items)
-10. Orders ↔ Payments (One order can have one payment)
-
+Let me know if you need further adjustments or additional features!
